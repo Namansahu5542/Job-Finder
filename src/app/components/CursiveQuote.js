@@ -65,11 +65,11 @@ export default function CursiveQuote({ quotes = DEFAULT_QUOTES, className = "" }
 
   return (
     <figure
-      className={`mx-auto w-full max-w-2xl rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-800/70 via-gray-900 to-gray-900 p-8 sm:p-12 ${className}`}
+      className={`mx-auto w-full max-w-2xl rounded-2xl border border-gray-800 bg-linear-to-br from-gray-800/70 via-gray-900 to-gray-900 p-8 sm:p-12 ${className}`}
     >
       <blockquote
         aria-live="polite"
-        className={`${cursive.className} min-h-[9rem] text-balance text-3xl leading-snug text-gray-100 sm:min-h-[10.5rem] sm:text-4xl`}
+        className={`${cursive.className} min-h-36 text-balance text-3xl leading-snug text-gray-100 sm:min-h-42 sm:text-4xl`}
       >
         <WrittenText key={index} text={quotes[index]} />
       </blockquote>
