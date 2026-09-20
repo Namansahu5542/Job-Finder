@@ -107,11 +107,11 @@ const Login = () => {
 
           <div className="m-4 text-gray-100">
             <form className="flex flex-col justify-center items-start gap-2" >
-              <div>  <label className="ml-1 text-sm font-[family-name:var(--font-poppins)]" htmlFor="email">Enter e-mail
+              <div>  <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="email">Enter e-mail
               </label>
                 <input id="email" type="email" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  abc@gmil.com" /></div>
 
-              <div>  <label className="ml-1 text-sm font-[family-name:var(--font-poppins)]" htmlFor="password">Enter Passowrd
+              <div>  <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="password">Enter Passowrd
               </label>
                 <input id="password" type="password" className={`${oauthButton} bg-gray-950`} placeholder="Eg :- nam0@552005" /></div>
 
