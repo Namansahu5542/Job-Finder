@@ -4,9 +4,11 @@ import CursiveQuote from './components/CursiveQuote'
 import Link from 'next/link'
 
 
+
 const page = () => {
   return (
-    <div className='min-h-screen w-full rounded-xl border border-gray-800 bg-gradient-to-br from-gray-900 to-gray-800 grid grid-rows-2'>
+    <div className='min-h-screen w-full  border border-gray-800 bg-linear-to-br relative from-gray-900 to-gray-800 grid grid-rows-2'>
+      
       <section className='row-span-1 flex flex-col justify-center items-center'>
         <div className='flex justify-center items-center '><img  className='h-30 w-30' src="/man.gif" alt="" /></div>
         <div className='bg-gray-900 rounded-2xl min-h-[60%] w-[40%]'>
