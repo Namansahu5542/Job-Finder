@@ -76,7 +76,7 @@ const Login = () => {
 
           <div className="space-y-3 text-center text-sm text-gray-400 md:text-left">
             <p>
-              Doesn't have an account?{" "}
+              Doesn&apos;t have an account?{" "}
               <Link
                 href="/Signup"
                 className="font-medium text-violet-400 underline-offset-4 hover:underline focus:outline-none focus-visible:underline"
@@ -105,18 +105,18 @@ const Login = () => {
         >
           <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-violet-500/10 blur-3xl" />
 
-          <div className="m-4 text-taupe-50">
+          <div className="m-4 text-gray-100">
             <form className="flex flex-col justify-center items-start gap-2" >
-              <div>  <label className="text-sm ml-1 font-(family-name:--font-poppins)" htmlFor="Username">Enter e-mail
+              <div>  <label className="ml-1 text-sm font-[family-name:var(--font-poppins)]" htmlFor="email">Enter e-mail
               </label>
-                <input type="text" className={`${oauthButton}  bg-gray-950`} placeholder="Eg :-  abc@gmil.com" /></div>
+                <input id="email" type="email" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  abc@gmil.com" /></div>
 
-              <div>  <label className="text-sm ml-1 font-(family-name:--font-poppins)" htmlFor="Username">Enter Passowrd
+              <div>  <label className="ml-1 text-sm font-[family-name:var(--font-poppins)]" htmlFor="password">Enter Passowrd
               </label>
-                <input type="password" className={`${oauthButton}  bg-gray-950`} placeholder="Eg :- nam0@552005" /></div>
+                <input id="password" type="password" className={`${oauthButton} bg-gray-950`} placeholder="Eg :- nam0@552005" /></div>
 
               <div className="flex gap-5">
-                <button type="button" className="text-white p-2 rounded-xl ml-1 mt-2 bg-linear-to-br from-gray-900 to-blue-400 hover:bg-linear-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-base text-sm px-4 py-2.5 text-center leading-5">Submit</button>
+                <button type="button" className="ml-1 mt-2 rounded-xl bg-linear-to-br from-gray-900 to-blue-400 px-4 py-2.5 text-center text-sm font-medium leading-5 text-white hover:bg-linear-to-bl focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">Submit</button>
 
                 <div className="text-white text-sm font-sans mt-5 cursor-pointer hover:text-red-300"><u>Forget password ?</u></div>
               </div>

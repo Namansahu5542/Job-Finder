@@ -30,7 +30,7 @@ const page = () => {
         <button
           className='rounded-xl border flex items-center border-white/10 bg-white/5 px-6 py-3 font-medium text-white backdrop-blur-md transition-all duration-300 hover:bg-white/10 hover:border-violet-500/50'
         >
-          <Link href='/Signup'>Let's Go</Link> <ArrowRight className='ml-1' />
+          <Link href='/Signup'>Let&apos;s Go</Link> <ArrowRight className='ml-1' />
         </button>
         <div><p className='text-sm font-serif text-gray-300 mt-5'><u>Free servive , No credit card required</u></p></div>
 
