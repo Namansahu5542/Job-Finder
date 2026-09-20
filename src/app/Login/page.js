@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Dancing_Script } from "next/font/google";
+import { signIn } from "@/auth";
 
 const cursive = Dancing_Script({
   subsets: ["latin"],
@@ -58,13 +59,16 @@ const Login = () => {
 
           <div className="flex flex-col gap-3">
 
-            <button
-              type="button"
-              className={`${oauthButton} border border-white/10 bg-gray-800 text-gray-100 hover:bg-gray-700`}
+            <form
+              action={async () => {
+                "use server";
+                await signIn("github", { redirectTo: "/dashboard" });
+              }}
             >
-              <GithubIcon />
-              Continue with GitHub
-            </button>
+              <button type="submit" className={`${oauthButton} border border-white/10 bg-gray-800 text-gray-100 hover:bg-gray-700`}>
+                <GithubIcon /> Continue with GitHub
+              </button>
+            </form>
             <button
               type="button"
               className={`${oauthButton} bg-white text-gray-900 hover:bg-gray-200`}

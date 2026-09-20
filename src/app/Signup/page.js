@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Dancing_Script } from "next/font/google";
+import { signIn } from "@/auth";
 
 const cursive = Dancing_Script({
   subsets: ["latin"],
@@ -58,13 +59,16 @@ const SignUpPage = () => {
 
           <div className="flex flex-col gap-3">
 
-            <button
-              type="button"
-              className={`${oauthButton} border border-white/10 bg-gray-800 text-gray-100 hover:bg-gray-700`}
+            <form
+              action={async () => {
+                "use server";
+                await signIn("github", { redirectTo: "/dashboard" });
+              }}
             >
-              <GithubIcon />
-              Continue with GitHub
-            </button>
+              <button type="submit" className={`${oauthButton} border border-white/10 bg-gray-800 text-gray-100 hover:bg-gray-700`}>
+                <GithubIcon /> Continue with GitHub
+              </button>
+            </form>
             <button
               type="button"
               className={`${oauthButton} bg-white text-gray-900 hover:bg-gray-200`}
@@ -107,21 +111,21 @@ const SignUpPage = () => {
 
           <div className="m-4 text-gray-100">
             <form className="flex flex-col justify-center items-start gap-2" >
-              <div> <label className="ml-1 text-sm font-[family-name:var(--font-poppins)]" htmlFor="username">Enter Username
+              <div> <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="username">Enter Username
               </label>
                 <input id="username" type="text" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  XYZ" /></div>
 
-              <div> <label className="ml-1 text-sm font-[family-name:var(--font-poppins)]" htmlFor="profile-name">Enter Profile Name
+              <div> <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="profile-name">Enter Profile Name
               </label>
                 <input id="profile-name" type="text" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  Naman Sahu" /></div>
 
 
 
-              <div>  <label className="ml-1 text-sm font-[family-name:var(--font-poppins)]" htmlFor="email">Enter e-mail
+              <div>  <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="email">Enter e-mail
               </label>
                 <input id="email" type="email" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  abc@gmil.com" /></div>
 
-              <div>  <label className="ml-1 text-sm font-[family-name:var(--font-poppins)]" htmlFor="password">Enter Passowrd
+              <div>  <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="password">Enter Passowrd
               </label>
                 <input id="password" type="password" className={`${oauthButton} bg-gray-950`} placeholder="Eg :- nam0@552005" /></div>
 

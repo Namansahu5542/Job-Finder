@@ -33,13 +33,13 @@ const Extended_Landingpage = () => {
                 <figure className='mt-6 flex flex-col items-center gap-6'>
                     
                     {change === "Organise Application" &&
-                        <Image className='h-auto w-full max-w-4xl rounded-xl object-contain' src="/next.svg" alt="Organise application" width={800} height={450} />
+                        <Image className='h-auto w-full max-w-4xl rounded-xl object-contain' src="/hero2.png" alt="Organise application" width={800} height={450} />
                     }
                     {change === "Hired" &&
-                        <Image className='h-auto w-full max-w-4xl rounded-xl object-contain' src="/vercel.svg" alt="Track hired applications" width={800} height={450} />
+                        <Image className='h-auto w-full max-w-4xl rounded-xl object-contain' src="/hero2.png" alt="Track hired applications" width={800} height={450} />
                     }
                     {change === "Manage Boards" &&
-                        <Image className='h-auto w-full max-w-4xl rounded-xl object-contain' src="/window.svg" alt="Manage application boards" width={800} height={450} />
+                        <Image className='h-auto w-full max-w-4xl rounded-xl object-contain' src="/hero3.png" alt="Manage application boards" width={800} height={450} />
                     }
 
                 </figure>
