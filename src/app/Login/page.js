@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Dancing_Script } from "next/font/google";
-import { signIn } from "@/auth";
+import { signIn } from "@/lib/auth/auth";
 
 const cursive = Dancing_Script({
   subsets: ["latin"],

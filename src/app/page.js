@@ -20,7 +20,7 @@ const page = () => {
           </div>
         </div>
         <div><Link
-          href='/Signup'
+          href='/dashboard'
           className='flex items-center rounded-xl border border-white/10 bg-white/5 px-6 py-3 font-medium text-white backdrop-blur-md transition-all duration-300 hover:border-violet-500/50 hover:bg-white/10'
         >
           Let&apos;s Go <ArrowRight className='ml-1' />
@@ -28,7 +28,7 @@ const page = () => {
       </section>
 
       <section className='mx-auto flex w-full max-w-7xl flex-col items-center px-4 pb-12 sm:px-6 lg:px-8'>
-        
+
         <p className='mt-5 text-center font-serif text-sm text-gray-300'><u>Free service, no credit card required</u></p>
         <Extended_Landingpage />
       </section>

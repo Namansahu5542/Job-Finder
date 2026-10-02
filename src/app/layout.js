@@ -3,6 +3,7 @@ import "./globals.css";
 import { Inter, Poppins, Roboto } from 'next/font/google';
 import Navbar from "./components/Navbar";
 
+
 const inter = Inter({
 
   subsets: ['latin'],
@@ -57,8 +58,10 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${poppins.variable} ${roboto.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        
         <Navbar />
         {children}
+      
       </body>
     </html>
   );

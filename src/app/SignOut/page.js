@@ -1,4 +1,4 @@
-import { auth, signOut } from "@/auth";
+import { auth, signOut } from "@/lib/auth/auth";
 
 export default async function signOut() {
   const session = await auth();

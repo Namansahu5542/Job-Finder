@@ -1,6 +1,10 @@
+"use client";
 import Link from "next/link";
 import { Dancing_Script } from "next/font/google";
-import { signIn } from "@/auth";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { ValidationAndTransformation } from "@/Pipline/VandT";
 
 const cursive = Dancing_Script({
   subsets: ["latin"],
@@ -40,7 +44,38 @@ const GoogleIcon = () => (
   </svg>
 );
 
+
 const SignUpPage = () => {
+  const [username, setusername] = useState("")
+  const [profilename, setprofilename] = useState("")
+  const [email, setemail] = useState("")
+  const [password, setpassword] = useState()
+  const [error, seterror] = useState("")
+  const [loading, setloading] = useState(true);
+  const router = useRouter();
+  async function handlesubmit(e) {
+    e.preventDefault();
+
+    const data = Object.fromEntries(new FormData(e.target));
+
+    const result = ValidationAndTransformation(data);
+    if (!result.valid) {
+      console.error("Enter valid  " + result.error);
+      return;
+    }
+
+
+    const res = await fetch("/api/SignUp", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (res.ok) router.push("/Login");
+    else seterror((await res.json()).error);
+
+
+
+  }
   return (
     <main className="flex min-h-screen w-full items-center justify-center bg-[#16181D] px-4 py-8 sm:px-6">
       <div className="grid grid-cols-2 w-full max-w-4xl overflow-hidden rounded-2xl border border-white/10 bg-linear-to-br from-gray-900 to-gray-800 shadow-2xl shadow-black/40 md:grid-cols-2">
@@ -59,18 +94,16 @@ const SignUpPage = () => {
 
           <div className="flex flex-col gap-3">
 
-            <form
-              action={async () => {
-                "use server";
-                await signIn("github", { redirectTo: "/dashboard" });
-              }}
-            >
-              <button type="submit" className={`${oauthButton} border border-white/10 bg-gray-800 text-gray-100 hover:bg-gray-700`}>
-                <GithubIcon /> Continue with GitHub
-              </button>
-            </form>
             <button
               type="button"
+              onClick={() => signIn("github", { redirectTo: "/dashboard" })}
+              className={`${oauthButton} border border-white/10 bg-gray-800 text-gray-100 hover:bg-gray-700`}
+            >
+              <GithubIcon /> Continue with GitHub
+            </button>
+            <button
+              type="button"
+              onClick={() => signIn("google", { redirectTo: "/dashboard" })}
               className={`${oauthButton} bg-white text-gray-900 hover:bg-gray-200`}
             >
               <GoogleIcon />
@@ -110,27 +143,28 @@ const SignUpPage = () => {
           <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-violet-500/10 blur-3xl" />
 
           <div className="m-4 text-gray-100">
-            <form className="flex flex-col justify-center items-start gap-2" >
+
+            <form onSubmit={handlesubmit} className="flex flex-col justify-center items-start gap-2" >
               <div> <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="username">Enter Username
               </label>
-                <input id="username" type="text" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  XYZ" /></div>
+                <input id="username" onChange={(e) => (setusername(e.target.value))} type="text" name="username" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  XYZ" /></div>
 
               <div> <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="profile-name">Enter Profile Name
               </label>
-                <input id="profile-name" type="text" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  Naman Sahu" /></div>
+                <input id="profile-name" onChange={(e) => (setprofilename(e.target.value))} type="text" name="pname" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  Naman Sahu" /></div>
 
 
 
               <div>  <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="email">Enter e-mail
               </label>
-                <input id="email" type="email" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  abc@gmil.com" /></div>
+                <input id="email" onChange={(e) => (setemail(e.target.value))} name="email" type="email" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  abc@gmil.com" /></div>
 
               <div>  <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="password">Enter Passowrd
               </label>
-                <input id="password" type="password" className={`${oauthButton} bg-gray-950`} placeholder="Eg :- nam0@552005" /></div>
+                <input id="password" name="pass" onChange={(e) => (setpassword(e.target.value))} type="password" className={`${oauthButton} bg-gray-950`} placeholder="Eg :- nam0@552005" /></div>
 
               <div>
-                <button type="button" className="ml-1 mt-2 rounded-xl bg-linear-to-br from-gray-900 to-blue-400 px-4 py-2.5 text-center text-sm font-medium leading-5 text-white hover:bg-linear-to-bl focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">Submit</button>
+                <button type="submit" className="ml-1 mt-2 rounded-xl bg-linear-to-br from-gray-900 to-blue-400 px-4 py-2.5 text-center text-sm font-medium leading-5 text-white hover:bg-linear-to-bl focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">Submit</button>
               </div>
             </form>
           </div>
