@@ -1,9 +1,9 @@
-"use client";
+
 import Link from "next/link";
 import { Dancing_Script } from "next/font/google";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+
+import Extended_Signup from "../components/Extended_Signup";
 
 const cursive = Dancing_Script({
   subsets: ["latin"],
@@ -45,24 +45,7 @@ const GoogleIcon = () => (
 
 
 const SignUpPage = () => {
-  const [error, seterror] = useState("")
-  const router = useRouter();
-  async function handlesubmit(e) {
-    e.preventDefault();
-
-    const data = Object.fromEntries(new FormData(e.target));
-
-    const res = await fetch("/api/SignUp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    if (res.ok) router.push("/Login");
-    else seterror((await res.json()).error);
-
-
-
-  }
+  
   return (
     <main className="flex min-h-screen w-full items-center justify-center bg-[#16181D] px-4 py-8 sm:px-6">
       <div className="grid grid-cols-2 w-full max-w-4xl overflow-hidden rounded-2xl border border-white/10 bg-linear-to-br from-gray-900 to-gray-800 shadow-2xl shadow-black/40 md:grid-cols-2">
@@ -127,34 +110,7 @@ const SignUpPage = () => {
           aria-hidden="true"
           className="relative hidden flex-col  gap-4 overflow-hidden border-l border-white/5 bg-[#16181D]/60 p-10 md:flex"
         >
-          <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-violet-500/10 blur-3xl" />
-
-          <div className="m-4 text-gray-100">
-
-            <form onSubmit={handlesubmit} className="flex flex-col justify-center items-start gap-2" >
-              <div> <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="username">Enter Username
-              </label>
-                <input id="username" type="text" name="username" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  XYZ" /></div>
-
-              <div> <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="profile-name">Enter Profile Name
-              </label>
-                <input id="profile-name" type="text" name="profileName" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  Naman Sahu" /></div>
-
-
-
-              <div>  <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="email">Enter e-mail
-              </label>
-                <input id="email" name="email" type="email" className={`${oauthButton} bg-gray-950`} placeholder="Eg :-  abc@gmil.com" /></div>
-
-              <div>  <label className="ml-1 text-sm font-(family-name:--font-poppins)" htmlFor="password">Enter Passowrd
-              </label>
-                <input id="password" name="password" type="password" className={`${oauthButton} bg-gray-950`} placeholder="Eg :- nam0@552005" /></div>
-
-              <div>
-                <button type="submit" className="ml-1 mt-2 rounded-xl bg-linear-to-br from-gray-900 to-blue-400 px-4 py-2.5 text-center text-sm font-medium leading-5 text-white hover:bg-linear-to-bl focus:ring-4 focus:ring-blue-300 focus:outline-none dark:focus:ring-blue-800">Submit</button>
-              </div>
-            </form>
-          </div>
+         <Extended_Signup/>
         </aside>
       </div>
     </main>
