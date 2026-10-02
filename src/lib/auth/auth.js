@@ -1,12 +1,36 @@
 import NextAuth from "next-auth";
-import GitHub from "next-auth/providers/github";
-import Google from "next-auth/providers/google";
 import dbConnect from "@/lib/db";
 import UserCredential from "@/models/User_Credential";
+import UserData from "@/models/User_Credentials_m2";
+import bcrypt from "bcryptjs";
+import Credentials from "next-auth/providers/credentials";
+import authConfig from "@/lib/auth/auth.config";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  providers: [GitHub, Google],
-  pages: { signIn: "/sign-in" }, // your custom page instead of the default one
+  ...authConfig,
+  providers: [...authConfig.providers, Credentials({
+    credentials: { email: {}, password: {} },
+    async authorize(credentials) {
+      await dbConnect();
+
+      const user = await UserData.findOne({
+        email: credentials.email.toLowerCase(),
+      }).select("+Password");
+
+      if (!user) return null;
+
+      const ok = await bcrypt.compare(credentials.password, user.Password);
+      if (!ok) return null;
+
+      return {
+        id: user._id.toString(),
+        email: user.email,
+        name: user.ProfileName,
+        username: user.Username,
+      };
+    },
+  }),
+  ],
   callbacks: {
     async signIn({ user, account }) {
       if (!user.name || !user.email || !account?.providerAccountId) {
@@ -35,10 +59,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       return true;
     },
-    // Runs in the proxy/middleware. Return false to redirect to the sign-in page.
-    authorized({ auth, request }) {
-      const isProtected = request.nextUrl.pathname.startsWith("/dashboard");
-      return isProtected ? !!auth?.user : true;
-    },
+    ...authConfig.callbacks,
   },
 });

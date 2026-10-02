@@ -1,6 +1,6 @@
 import { auth, signOut } from "@/lib/auth/auth";
 
-export default async function signOut() {
+export default async function SignOutPage() {
   const session = await auth();
   if (!session) return null; // the proxy already redirected, this is a safety check
 

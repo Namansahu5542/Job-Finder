@@ -1,40 +1,57 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { prisma } from "@/lib/prisma";
+import dbConnect from "@/lib/db";
+import UserData from "@/models/User_Credentials_m2";
 
 const schema = z.object({
-    username: z.string().min(3).max(20).regex(/^[a-zA-Z0-9_]+$/),
-    profileName: z.string().min(1).max(50),
-    email: z.string().email(),
-    password: z.string().min(8),
+  username: z.string().min(3).max(20).regex(/^[a-zA-Z0-9_]+$/),
+  profileName: z.string().min(1).max(50),
+  email: z.string().email(),
+  password: z.string().min(8),
 });
 
 export async function POST(req) {
-    const body = await req.json();
-    const parsed = schema.safeParse(body);
+  const body = await req.json();
+  const parsed = schema.safeParse(body);
 
-    if (!parsed.success) {
-        return NextResponse.json({ error: "Invalid input" }, { status: 400 });
-    }
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid input" }, { status: 400 });
+  }
 
-    const { username, profileName, email, password } = parsed.data;
+  const { username, profileName, email, password } = parsed.data;
+  const normalizedEmail = email.toLowerCase();
 
-    const existing = await prisma.user.findFirst({
-        where: { OR: [{ email }, { username }] },
+  await dbConnect();
+
+  const existing = await UserData.findOne({
+    $or: [{ email: normalizedEmail }, { Username: username }],
+  });
+  if (existing) {
+    return NextResponse.json(
+      { error: "Email or username already taken" },
+      { status: 409 }
+    );
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  try {
+    await UserData.create({
+      Username: username,
+      ProfileName: profileName,
+      email: normalizedEmail,
+      Password: hashedPassword,
     });
-    if (existing) {
-        return NextResponse.json(
-            { error: "Email or username already taken" },
-            { status: 409 }
-        );
+  } catch (e) {
+    if (e.code === 11000) {
+      return NextResponse.json(
+        { error: "Email or username already taken" },
+        { status: 409 }
+      );
     }
+    throw e;
+  }
 
-    const hashed = await bcrypt.hash(password, 10);
-
-    await prisma.user.create({
-        data: { username, profileName, email, password: hashed },
-    });
-
-    return NextResponse.json({ success: true }, { status: 201 });
+  return NextResponse.json({ success: true }, { status: 201 });
 }
