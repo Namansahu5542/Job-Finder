@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import dbConnect from "@/lib/db";
 import UserData from "@/models/User_Credentials_m2";
+import { initializeUserBoard } from "@/lib/init-user-board";
 
 const schema = z.object({
   username: z.string().min(3).max(20).regex(/^[a-zA-Z0-9_]+$/),
@@ -34,14 +35,15 @@ export async function POST(req) {
     );
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashed = await bcrypt.hash(password, 10);
 
+  let user;
   try {
-    await UserData.create({
+    user = await UserData.create({
       Username: username,
       ProfileName: profileName,
       email: normalizedEmail,
-      Password: hashedPassword,
+      Password: hashed,
     });
   } catch (e) {
     if (e.code === 11000) {
@@ -51,6 +53,14 @@ export async function POST(req) {
       );
     }
     throw e;
+  }
+
+  // Create the default "Job Hunt" board with its empty columns
+  try {
+    await initializeUserBoard(user._id.toString());
+  } catch (e) {
+    // Don't fail sign-up if this fails; the dashboard will retry it
+    console.error("Board init failed:", e);
   }
 
   return NextResponse.json({ success: true }, { status: 201 });

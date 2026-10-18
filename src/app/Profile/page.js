@@ -1,6 +1,7 @@
 import { auth } from '@/lib/auth/auth'
 import BackgroundImage from '@/app/components/background-image'
 import ChangeDescription from '../components/User-Description';
+import { signOut } from '@/lib/auth/auth';
 
 
 const default_descrption = 'Hey , I am new here'
@@ -43,6 +44,24 @@ const page = async () => {
           <ChangeDescription storageKey={descKey} />
 
         </section>
+      </div>
+      <div className='grid grid-cols-3 min-h-screen w-full bg-gray-800'>
+        <section className='border-2 col-span-2 border-white  '></section>
+        <section className='h-full w-full bg-gray-50 flex flex-col'>
+          <div className='mx-2 my-3 h-full '>
+            <div className='bg-gray-200 rounded-2xl gap-10 w-[30%] text-black font-bold flex justify-center items-center text-center  flex-col  font-family-name:--font-poppins)'>
+              <p>Connections - 50</p>
+              <p>Posts - 5</p>
+              <div>
+
+                <form action={async () => { "use server"; await signOut({ redirectTo: "/Login" }); }}>
+                  <button type="submit" className='font-sans cursor-pointer'>Sign out</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
     </main>
   )
