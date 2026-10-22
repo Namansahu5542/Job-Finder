@@ -4,6 +4,7 @@ import Link from 'next/link'
 import dbConnect from '@/lib/db'
 import Board from '@/models/board';
 import { initializeUserBoard } from '@/lib/init-user-board'
+import KanbanBoard from '../components/kanban';
 
 const page = async () => {
   const session = await auth()
@@ -18,17 +19,17 @@ const page = async () => {
   const boardget = await Board.findOne({
     userid: session.user.id,
     name: 'Job Hunt',
-  })
+  }).populate('columns')
 
   return (
     <div className='bg-linear-to-br from-gray-950 to-gray-800 min-h-screen w-full overflow-hidden'>
       <div className='h-full w-full mx-4 my-2'>
         <div className='h-15 w-full text-white flex flex-col gap-2 ml-4 mt-4 justify-center items-start  font-(family-name:--font-poppins) '>
           <p className='text-2xl font-bold'>{boardget.name}</p>
-          <p>The Best Place For you</p>
+          <p>Track Your Job Application</p>
         </div>
         <main>
-          
+        <KanbanBoard boardget={JSON.parse(JSON.stringify(boardget))}/>
         </main>
       </div>
     </div>
