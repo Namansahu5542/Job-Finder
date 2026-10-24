@@ -21,7 +21,7 @@ const ColumnSchema = new mongoose.Schema(
         job_applications: [
             {
                 type: Schema.Types.ObjectId,
-                ref: "job_application",
+                ref: "Job_Applications",
             },
         ],
     },

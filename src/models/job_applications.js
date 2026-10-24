@@ -1,19 +1,22 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
-const job_Applications = new mongoose.Schema(
+const jobApplicationSchema = new mongoose.Schema(
     {
         company: {
             type: String,
             required: true,
+            trim: true,
         },
         position: {
             type: String,
             required: true,
+            trim: true,
         },
         location: {
             type: String,
             required: true,
+            trim: true,
         },
         status: {
             type: String,
@@ -44,6 +47,8 @@ const job_Applications = new mongoose.Schema(
         },
         jobUrl: {
             type: String,
+            required: true,
+            trim: true,
         },
         notes: {
             type: String,
@@ -54,10 +59,10 @@ const job_Applications = new mongoose.Schema(
         AppliedDate: {
             type: Date,
         },
-        tags: [{ type: String }],
-        description: { type: String },
+        tags: [{ type: String, trim: true }],
+        description: { type: String, required: true, trim: true },
     },
-    { timestamps: true }   // was: timpestamps
+    { timestamps: true }
 );
 
-export default mongoose.models.Job_Applications || mongoose.model("Job_Applications", job_Applications);
+export default mongoose.models.Job_Applications || mongoose.model("Job_Applications", jobApplicationSchema);

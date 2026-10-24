@@ -6,6 +6,8 @@ import Board from '@/models/board';
 import { initializeUserBoard } from '@/lib/init-user-board'
 import KanbanBoard from '../components/kanban';
 
+
+
 const page = async () => {
   const session = await auth()
 
@@ -19,7 +21,13 @@ const page = async () => {
   const boardget = await Board.findOne({
     userid: session.user.id,
     name: 'Job Hunt',
-  }).populate('columns')
+  }).populate({
+    path: 'columns',
+    populate:{
+      path:'job_applications'
+    }
+
+  });
 
   return (
     <div className='bg-linear-to-br from-gray-950 to-gray-800 min-h-screen w-full overflow-hidden'>
@@ -29,7 +37,7 @@ const page = async () => {
           <p>Track Your Job Application</p>
         </div>
         <main>
-        <KanbanBoard boardget={JSON.parse(JSON.stringify(boardget))}/>
+          <KanbanBoard boardget={JSON.parse(JSON.stringify(boardget))} />
         </main>
       </div>
     </div>
