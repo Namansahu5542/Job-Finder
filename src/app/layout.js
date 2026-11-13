@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
+import Image from "next/image";
 import "./globals.css";
 import { Inter, Poppins, Roboto } from 'next/font/google';
 import Navbar from "./components/Navbar";
@@ -58,14 +60,28 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${poppins.variable} ${roboto.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        
-        <Navbar />
+        <Suspense
+          fallback={
+            <nav
+              aria-hidden="true"
+              className="flex h-15 w-full items-center bg-linear-to-br from-gray-900 to-gray-800 text-white"
+            >
+              <div className="flex w-full items-center justify-between px-5 font-(family-name:--font-poppins)">
+                <div className="flex items-center gap-2">
+                  <p className="text-2xl font-extrabold">Hire me</p>
+                  <Image src="/PNG/job-seeker.png" height={50} width={50} alt="" />
+                </div>
+                <div className="h-8 w-24" />
+              </div>
+            </nav>
+          }
+        >
+          <Navbar />
+        </Suspense>
         {children}
       
       </body>
     </html>
   );
 }
-
-
 

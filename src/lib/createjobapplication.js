@@ -4,6 +4,7 @@ import { auth } from "./auth/auth";
 import dbConnect from "./db";
 import Board from "@/models/board";
 import Column from "@/models/column";
+import { updateTag } from "next/cache";
 
 export default async function createjobapplication({ data }) {
     const session = await auth();
@@ -64,7 +65,7 @@ export default async function createjobapplication({ data }) {
         { _id: column._id },
         { $push: { job_applications: application._id } }
     );
-
+    updateTag(`board-${userId}`);
     return {
         message: "Job application added successfully.",
         data: JSON.parse(JSON.stringify(application)),

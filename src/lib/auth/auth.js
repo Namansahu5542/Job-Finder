@@ -5,6 +5,7 @@ import UserData from "@/models/User_Credentials_m2";
 import bcrypt from "bcryptjs";
 import Credentials from "next-auth/providers/credentials";
 import authConfig from "@/lib/auth/auth.config";
+import { getMaxAge } from "next/dist/server/image-optimizer";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -31,6 +32,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
   }),
   ],
+  session: {
+    cookieCache: {
+      enable: true,
+      maxAge: 60 * 60,
+    }
+  },
   callbacks: {
     async signIn({ user, account }) {
       if (!user.name || !user.email || !account?.providerAccountId) {

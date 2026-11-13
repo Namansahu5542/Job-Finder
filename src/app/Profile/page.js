@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { auth } from '@/lib/auth/auth'
 import BackgroundImage from '@/app/components/background-image'
 import ChangeDescription from '../components/User-Description';
@@ -5,7 +6,7 @@ import { signOut } from '@/lib/auth/auth';
 
 
 const default_descrption = 'Hey , I am new here'
-const page = async () => {
+const ProfileContent = async () => {
   const session = await auth();
   const name = session?.user?.name ?? '';
   const email = session?.user?.email ?? '';
@@ -67,4 +68,10 @@ const page = async () => {
   )
 }
 
-export default page
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={<main className="min-h-screen w-full bg-[#140b22]" aria-busy="true" />}>
+      <ProfileContent />
+    </Suspense>
+  )
+}

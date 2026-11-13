@@ -1,6 +1,6 @@
-import dbConnect from "@/lib/db";
-import Board from "@/models/board";
-import Column from "@/models/column";
+import dbConnect from "./db.js";
+import Board from "../models/board.js";
+import Column from "../models/column.js";
 
 const defaultColumns = [
     { name: "Wishlist", order: 0 },

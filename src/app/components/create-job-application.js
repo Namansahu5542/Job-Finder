@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import  createjobapplication  from "@/lib/createjobapplication"
 const INITIAL_FORM_DATA = {
   company: "",
@@ -27,7 +28,7 @@ const INITIAL_FORM_DATA = {
   description: "",
 }
 export default function CreateJobApplication({ columnId, boardId }) {
-  
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -55,6 +56,7 @@ export default function CreateJobApplication({ columnId, boardId }) {
         console.log(result.message);
         setFormdata({ ...INITIAL_FORM_DATA });
         setOpen(false);
+        router.refresh();
       } else {
         setError(result.error);
       }
