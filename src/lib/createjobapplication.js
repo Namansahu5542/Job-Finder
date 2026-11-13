@@ -5,6 +5,8 @@ import dbConnect from "./db";
 import Board from "@/models/board";
 import Column from "@/models/column";
 import { updateTag } from "next/cache";
+import { Josefin_Slab } from "next/font/google";
+import job_applications from "@/models/job_applications";
 
 export default async function createjobapplication({ data }) {
     const session = await auth();
@@ -69,5 +71,78 @@ export default async function createjobapplication({ data }) {
     return {
         message: "Job application added successfully.",
         data: JSON.parse(JSON.stringify(application)),
+    };
+}
+export async function updatejobapplications(applicationId, updates) {
+    const session = await auth();
+    const userId = session?.user?.id;
+    if (!userId) return { error: "Authentication required." };
+
+    await dbConnect();
+
+    const application = await Job_Applications.findOne({ _id: applicationId, userId });
+    if (!application) return { error: "Application not found." };
+
+    const { columnId, order, ...fields } = updates;
+
+    const $set = {};
+    for (const [key, value] of Object.entries(fields)) {
+        if (value !== undefined) $set[key] = value;
+    }
+
+    const oldColumnId = application.columnId.toString();
+    const oldOrder = application.order; // keep as a number
+    const hasOrder = order !== undefined && order !== null;
+
+    if (columnId && String(columnId) !== oldColumnId) {
+        // Validate before any writes
+        const newColumn = await Column.findOne({ _id: columnId, boardId: application.boardId });
+        if (!newColumn) return { error: "Column not found on this board." };
+
+        const count = await Job_Applications.countDocuments({ columnId: newColumn._id });
+        const newOrder = hasOrder ? Math.min(order, count) : count;
+
+        // Close the gap in the old column
+        await Job_Applications.updateMany(
+            { columnId: oldColumnId, order: { $gt: oldOrder } },
+            { $inc: { order: -1 } }
+        );
+        // Open a slot in the new column
+        await Job_Applications.updateMany(
+            { columnId: newColumn._id, order: { $gte: newOrder } },
+            { $inc: { order: 1 } }
+        );
+        // Keep the column arrays in sync
+        await Column.updateOne({ _id: oldColumnId }, { $pull: { job_applications: application._id } });
+        await Column.updateOne({ _id: newColumn._id }, { $push: { job_applications: application._id } });
+
+        $set.columnId = newColumn._id;
+        $set.order = newOrder;
+        $set.status = newColumn.name.toLowerCase();
+    } else if (hasOrder && order !== oldOrder) {
+        if (order > oldOrder) {
+            await Job_Applications.updateMany(
+                { columnId: oldColumnId, order: { $gt: oldOrder, $lte: order } },
+                { $inc: { order: -1 } }
+            );
+        } else {
+            await Job_Applications.updateMany(
+                { columnId: oldColumnId, order: { $gte: order, $lt: oldOrder } },
+                { $inc: { order: 1 } }
+            );
+        }
+        $set.order = order;
+    }
+
+    const updated = await Job_Applications.findByIdAndUpdate(
+        application._id,
+        { $set },
+        { new: true }
+    );
+
+    updateTag(`board-${userId}`);
+    return {
+        message: "Job application updated successfully.",
+        data: JSON.parse(JSON.stringify(updated)),
     };
 }

@@ -20,6 +20,7 @@ function sortedJobApplication(applications = []) {
 }
 
 export default function KanbanBoard({ boardget }) {
+  // const { column, movejob } = UseJob(boardget);
   return (
     <section className="w-full">
       <div className="flex w-full gap-1 overflow-x-auto mt-4 pb-4">
